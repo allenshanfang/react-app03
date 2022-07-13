@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx'
-import { http, setToken, getToken } from '@/utils'
+import { http, setToken, getToken, removeToken } from '@/utils'
 
 class LoginStore {
   //一開始取token有就拿 沒有就空
@@ -14,6 +14,11 @@ class LoginStore {
     this.token = res.data.token
     //結果存token
     setToken(this.token)
+  }
+  //刪除Token
+  loginOut=()=>{
+    this.token =''
+    removeToken()
   }
 }
 export default LoginStore
