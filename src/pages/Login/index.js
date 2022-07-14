@@ -11,17 +11,23 @@ function Login () {
   const navigate = useNavigate()
   async function onFinish (values) {
     console.log(values.username, values.password)
-    try {
-      await loginStore.setToken({
-        mobile: values.username,
-        code: values.password
-      })
-      navigate('/', { replace: true })
-      message.success('登入成功')
+    if (values.remember) {
+      try {
+        await loginStore.getToken({
+          mobile: values.username,
+          code: values.password
+        })
+        navigate('/', { replace: true })
+        message.success('登入成功')
+      }
+      catch {
+        message.success('登入失敗')
+      }
     }
-    catch {
-      message.success('登入失敗')
+    else {
+      message.success('登入失敗!請同意保護協議')
     }
+
 
   }
 

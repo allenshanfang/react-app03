@@ -1,5 +1,5 @@
 import { Layout, Menu, Popconfirm } from 'antd'
-import {Outlet,Link,useLocation,useNavigate}from 'react-router-dom'
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import {
   HomeOutlined,
@@ -8,39 +8,42 @@ import {
   LogoutOutlined
 } from '@ant-design/icons'
 import './index.scss'
-import {useStore} from '@/store'
+import { useStore } from '@/store'
 import { useEffect } from 'react'
 
 const { Header, Sider } = Layout
 
 const GeekLayout = () => {
+
   //網址當key
-  const {pathname} = useLocation()
+  const { pathname } = useLocation()
   //User接口
-  const {userStore,loginStore} = useStore()
+  const { userStore, loginStore, channelStore } = useStore()
   //UserToken
-  useEffect(()=>{
-    userStore.getUerInfo()
-  },[userStore]
+  useEffect(() => {
+    userStore.getUserInfo()
+    channelStore.loadChannelList()
+  }, [userStore, channelStore]
   )
+  //console.log(userStore.useInfo)
   //dnt更新的寫法
   const items = [
     getItem(<Link to={'/'}>數據預覽</Link>, '/', <HomeOutlined />),
     getItem(<Link to={'/article'}>內容管理</Link>, '/article', <DiffOutlined />),
     getItem(<Link to={'/publish'}>發文</Link>, '/publish', <EditOutlined />),
-  ];
-  function getItem(label, key, icon, children, type) {
+  ]
+  function getItem (label, key, icon, children, type) {
     return {
       key,
       icon,
       children,
       label,
       type,
-    };
+    }
   }
   //退出
   const navigate = useNavigate()
-  const onConfirm =()=>{
+  const onConfirm = () => {
     loginStore.loginOut()
     navigate('/login')
   }
@@ -49,11 +52,11 @@ const GeekLayout = () => {
       <Header className="header">
         <div className="logo" />
         <div className="user-info">
-          <span className="user-name">{userStore.useInfo.name}</span>
+          <span className="user-name">{userStore.userInfo.name}</span>
           <span className="user-logout">
-            <Popconfirm 
+            <Popconfirm
               onConfirm={onConfirm}
-            title="是否要退出？" okText="退出" cancelText="不要">
+              title="是否要退出？" okText="退出" cancelText="不要">
               <LogoutOutlined /> 退出
             </Popconfirm>
           </span>
@@ -78,16 +81,16 @@ const GeekLayout = () => {
               <Link to={'/publish'}>發文</Link>
             </Menu.Item>
           </Menu> */}
-                <Menu
-        defaultSelectedKeys={[pathname]}
-        defaultOpenKeys={['/']}
-        mode="inline"
-        theme="dark"
-        items={items}
-      />
+          <Menu
+            defaultSelectedKeys={[pathname]}
+            defaultOpenKeys={['/']}
+            mode="inline"
+            theme="dark"
+            items={items}
+          />
         </Sider>
         <Layout className="layout-content" style={{ padding: 20 }}>
-          <Outlet/>
+          <Outlet />
         </Layout>
       </Layout>
     </Layout>
