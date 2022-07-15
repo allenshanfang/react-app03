@@ -4,10 +4,10 @@ import { history } from './history'
 
 const http = axios.create({
   baseURL: 'http://geek.itheima.net/v1_0',
-  headers: {
-    'http-equiv': 'Content-Security-Policy',
-    'content': 'upgrade-insecure-requests'
-  },
+  // headers: {
+  //   'http-equiv': 'Content-Security-Policy',
+  //   'content': 'upgrade-insecure-requests'
+  // },
   timeout: 5000,
 })
 // 增加請求
